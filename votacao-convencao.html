@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Votação — Convenção do Condomínio Sítio do Engenho</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   CONFIGURAÇÃO: https://script.google.com/macros/s/AKfycbyZ4BAsUz_hAwDLUMXR6DtM4SEPshJTz7b0UjB1HHCllFbUHAC10QGRTLv2g9Jd68RF/exec
+   ══════════════════════════════════════════ */
+
+:root {
+  --fav: #059669; --fav-bg: #ecfdf5; --fav-bd: #a7f3d0;
+  --con: #dc2626; --con-bg: #fef2f2; --con-bd: #fecaca;
+  --abs: #d97706; --abs-bg: #fffbeb; --abs-bd: #fde68a;
+  --des: #7c3aed; --des-bg: #f5f3ff; --des-bd: #ddd6fe;
+  --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b;
+  --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
+  --font: 'Libre Baskerville', Baskerville, Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--slate-100);
+  color: var(--slate-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TELA DE LOGIN ── */
+.login-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, var(--slate-900) 0%, var(--slate-800) 50%, var(--slate-700) 100%);
+  padding: 20px;
+}
+.login-card {
+  background: #fff; border-radius: 12px; padding: 40px 36px;
+  max-width: 440px; width: 100%; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+.login-card .badge {
+  font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--slate-500); font-weight: 700; margin-bottom: 8px; text-align: center;
+}
+.login-card h1 {
+  font-size: 21px; font-weight: 700; color: var(--slate-900);
+  margin: 0 0 6px; line-height: 1.3; text-align: center;
+}
+.login-card .sub { font-size: 13px; color: var(--slate-500); text-align: center; margin: 0; }
+.login-card .divider { width: 40px; height: 2px; background: var(--des); margin: 16px auto 24px; }
+.login-card label {
+  display: block; font-size: 10.5px; font-weight: 700; color: #475569;
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px;
+}
+.login-card input[type="text"], .login-card input[type="email"] {
+  width: 100%; padding: 11px 14px; font-size: 14px; font-family: var(--font);
+  border: 1.5px solid #d1d5db; border-radius: 6px; outline: none; background: var(--slate-50);
+  margin-bottom: 14px;
+}
+.login-card input:focus { border-color: var(--des); }
+.btn-primary {
+  width: 100%; padding: 13px; font-size: 13px; font-weight: 700; font-family: var(--font);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  background: linear-gradient(135deg, var(--slate-900), var(--slate-800));
+  color: var(--slate-50); border: none; border-radius: 6px; cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: wait; }
+.login-card .note { font-size: 10.5px; color: var(--slate-400); text-align: center; margin-top: 14px; line-height: 1.5; }
+.erro { color: var(--con); font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.ja-votou { text-align: center; padding: 20px 0; }
+.ja-votou .icon { font-size: 40px; margin-bottom: 12px; }
+.ja-votou .msg { font-size: 15px; color: var(--fav); font-weight: 700; margin-bottom: 8px; }
+.ja-votou .detalhe { font-size: 13px; color: var(--slate-500); line-height: 1.5; }
+
+/* ── HEADER FIXO ── */
+.header {
+  background: linear-gradient(135deg, var(--slate-900) 0%, var(--slate-800) 60%, var(--slate-700) 100%);
+  padding: 18px 24px 14px; color: var(--slate-50);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.header-inner { max-width: 800px; margin: 0 auto; }
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+.header .badge-sm { font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate-400); font-weight: 600; margin-bottom: 2px; }
+.header h1 { font-size: 17px; font-weight: 700; margin: 0; }
+.votante-tag {
+  background: var(--slate-800); border-radius: 6px; padding: 5px 12px;
+  border: 1px solid var(--slate-700);
+}
+.votante-tag .lbl { font-size: 9px; color: var(--slate-400); text-transform: uppercase; letter-spacing: 0.05em; }
+.votante-tag .nome { font-size: 12.5px; font-weight: 700; color: var(--slate-200); }
+.progress-bar { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+.progress-track { flex: 1; height: 5px; background: var(--slate-700); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease; }
+.progress-fill.completo { background: linear-gradient(90deg, #22c55e, #16a34a); }
+.progress-fill.parcial { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+.progress-count { font-size: 11.5px; color: var(--slate-300); font-weight: 600; white-space: nowrap; }
+.contadores { display: flex; gap: 12px; margin-top: 7px; flex-wrap: wrap; }
+.contadores .item { display: flex; align-items: center; gap: 4px; }
+.contadores .dot { width: 7px; height: 7px; border-radius: 50%; }
+.contadores .txt { font-size: 10px; color: var(--slate-400); }
+.contadores .txt strong { color: var(--slate-200); }
+
+/* ── ARTIGOS ── */
+.corpo { max-width: 800px; margin: 0 auto; padding: 22px 16px 120px; }
+.artigo-card {
+  margin-bottom: 16px; background: #fff; border-radius: 8px;
+  border: 1px solid var(--slate-200); border-left: 5px solid var(--slate-200);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03); overflow: hidden;
+}
+.artigo-card.v-favoravel { border-left-color: var(--fav); }
+.artigo-card.v-contrario { border-left-color: var(--con); }
+.artigo-card.v-abstencao { border-left-color: var(--abs); }
+.artigo-card.v-destaque { border-left-color: var(--des); }
+.titulo-secao {
+  background: linear-gradient(135deg, var(--slate-900), var(--slate-800));
+  padding: 9px 20px; color: var(--slate-300); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.artigo-body { padding: 16px 20px; }
+.artigo-texto { font-size: 14px; line-height: 1.7; color: var(--slate-900); }
+.artigo-texto .num { font-weight: 800; margin-right: 8px; }
+
+.filho-item {
+  margin-left: 20px; padding: 12px 16px; margin-top: 6px;
+  border-left: 3px solid var(--slate-200); background: var(--slate-50);
+  border-radius: 0 6px 6px 0;
+}
+.filho-item.tipo-inciso { border-left-color: rgba(37,99,235,0.15); }
+.filho-item.tipo-alinea { border-left-color: rgba(124,58,237,0.15); }
+.filho-item.tipo-paragrafo { border-left-color: rgba(8,145,178,0.15); }
+.filho-texto { font-size: 13px; line-height: 1.65; color: var(--slate-800); }
+.tag-numero {
+  display: inline-block; padding: 1px 8px; border-radius: 3px;
+  font-size: 10px; font-weight: 700; margin-right: 8px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.tag-inciso { background: rgba(37,99,235,0.08); color: #2563eb; }
+.tag-alinea { background: rgba(124,58,237,0.08); color: #7c3aed; }
+.tag-paragrafo { background: rgba(8,145,178,0.08); color: #0891b2; }
+
+.sub-item {
+  margin-left: 32px; padding: 10px 14px;
+  border-left: 2px solid var(--slate-200); margin-top: 4px;
+}
+.sub-item .sub-num { font-weight: 700; color: var(--des); margin-right: 5px; }
+
+/* ── BOTÕES DE VOTO ── */
+.btns-voto { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.btn-voto {
+  padding: 6px 13px; font-size: 11px; font-weight: 500; font-family: var(--font);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  border: 1.5px solid var(--slate-300); border-radius: 4px;
+  cursor: pointer; background: #fff; color: var(--slate-400);
+  transition: all 0.15s ease; display: flex; align-items: center; gap: 4px;
+}
+.btn-voto:hover { background: var(--slate-50); }
+.btn-voto.sel-favoravel { border-color: var(--fav); background: var(--fav-bg); color: var(--fav); font-weight: 700; }
+.btn-voto.sel-contrario { border-color: var(--con); background: var(--con-bg); color: var(--con); font-weight: 700; }
+.btn-voto.sel-abstencao { border-color: var(--abs); background: var(--abs-bg); color: var(--abs); font-weight: 700; }
+.btn-voto.sel-destaque  { border-color: var(--des); background: var(--des-bg); color: var(--des); font-weight: 700; }
+
+/* ── RODAPÉ DE AÇÕES ── */
+.acoes { text-align: center; margin-top: 24px; }
+.btn-revisar {
+  padding: 11px 28px; font-size: 11.5px; font-weight: 700; font-family: var(--font);
+  background: #fff; color: var(--slate-800); border: 1.5px solid var(--slate-300);
+  border-radius: 6px; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.btn-submeter {
+  padding: 14px 44px; font-size: 13.5px; font-weight: 700; font-family: var(--font);
+  color: #fff; border: none; border-radius: 6px; cursor: pointer;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.btn-submeter.pronto { background: linear-gradient(135deg, var(--fav), #047857); }
+.btn-submeter.parcial { background: linear-gradient(135deg, #475569, var(--slate-500)); }
+.btn-submeter:disabled { opacity: 0.5; cursor: wait; }
+.aviso-sub { font-size: 10.5px; color: var(--slate-400); margin-top: 10px; line-height: 1.5; }
+
+/* ── RESUMO ── */
+.resumo-box {
+  margin-top: 18px; background: #fff; border-radius: 8px;
+  border: 1px solid var(--slate-200); padding: 22px; display: none;
+}
+.resumo-box.visivel { display: block; }
+.resumo-box h2 {
+  font-size: 13px; font-weight: 700; color: var(--slate-900);
+  margin: 0 0 14px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.resumo-linha { padding-left: 8px; font-size: 12.5px; line-height: 1.9; }
+.resumo-linha.pendente { color: var(--slate-300); font-style: italic; }
+.resumo-grupo { margin-bottom: 8px; border-bottom: 1px solid var(--slate-100); padding-bottom: 4px; }
+.resumo-grupo .rg-titulo { font-weight: 700; color: var(--slate-900); font-size: 12.5px; }
+
+/* ── CONFIRMAÇÃO ── */
+.confirmacao-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #064e3b, #059669, #34d399); padding: 20px;
+}
+.confirmacao-card {
+  background: #fff; border-radius: 12px; padding: 48px 36px;
+  max-width: 480px; width: 100%; box-shadow: 0 25px 60px rgba(0,0,0,0.2); text-align: center;
+}
+.confirmacao-card .check {
+  width: 64px; height: 64px; border-radius: 50%; background: var(--fav-bg);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; border: 3px solid var(--fav-bd);
+  font-size: 32px; color: var(--fav);
+}
+.confirmacao-card h1 { font-size: 20px; font-weight: 700; color: var(--slate-900); margin: 0 0 8px; }
+.confirmacao-card .msg { font-size: 14px; color: #475569; margin: 0 0 20px; line-height: 1.6; }
+.confirmacao-card .info-box {
+  padding: 14px 20px; background: var(--slate-50); border-radius: 8px;
+  border: 1px solid var(--slate-200); font-size: 12px; color: var(--slate-500); line-height: 1.6;
+}
+.confirmacao-card .timestamp { font-size: 11px; color: var(--slate-400); margin-top: 20px; }
+
+/* ── OVERLAY DE CARREGAMENTO ── */
+.overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15,23,42,0.7); display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.overlay .spinner {
+  width: 40px; height: 40px; border: 3px solid var(--slate-700);
+  border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TELA 1: LOGIN / IDENTIFICAÇÃO
+     ═══════════════════════════════════════════════════════════ -->
+<div id="tela-login" class="login-wrap">
+  <div class="login-card">
+    <div class="badge">Assembleia Geral Extraordinária</div>
+    <h1>Condomínio Sítio do Engenho</h1>
+    <p class="sub">Votação da Proposta de Convenção Condominial</p>
+    <div class="divider"></div>
+
+    <div id="form-login">
+      <label for="inp-nome">Nome completo do Condômino</label>
+      <input type="text" id="inp-nome" placeholder="Conforme registro condominial">
+      <label for="inp-email">E-mail (mesmo da convocação)</label>
+      <input type="email" id="inp-email" placeholder="seu@email.com">
+      <div id="login-erro" class="erro hidden"></div>
+      <button class="btn-primary" id="btn-entrar" onclick="entrar()">Acessar Cédula de Votação</button>
+      <p class="note">Voto individual e identificado, conforme regimento. Cada e-mail vota uma única vez.</p>
+    </div>
+
+    <div id="msg-ja-votou" class="ja-votou hidden">
+      <div class="icon">✓</div>
+      <div class="msg">Voto já registrado</div>
+      <div class="detalhe">O condômino <strong id="nome-ja-votou"></strong> já submeteu sua cédula com este e-mail. Cada e-mail pode votar apenas uma vez.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TELA 2: VOTAÇÃO
+     ═══════════════════════════════════════════════════════════ -->
+<div id="tela-votacao" class="hidden">
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div>
+          <div class="badge-sm">Cédula de Votação</div>
+          <h1>Convenção · Sítio do Engenho</h1>
+        </div>
+        <div class="votante-tag">
+          <div class="lbl">Votante</div>
+          <div class="nome" id="hdr-nome"></div>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-track"><div class="progress-fill parcial" id="progress-fill" style="width:0%"></div></div>
+        <span class="progress-count" id="progress-count">0/0</span>
+      </div>
+      <div class="contadores" id="contadores"></div>
+    </div>
+  </div>
+
+  <div class="corpo" id="corpo-artigos"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TELA 3: CONFIRMAÇÃO
+     ═══════════════════════════════════════════════════════════ -->
+<div id="tela-confirmacao" class="confirmacao-wrap hidden">
+  <div class="confirmacao-card">
+    <div class="check">✓</div>
+    <h1>Cédula Registrada com Sucesso</h1>
+    <p class="msg">A votação de <strong id="conf-nome"></strong> foi registrada e não poderá ser alterada.</p>
+    <div class="info-box">O resultado consolidado será apresentado pelo Conselho Fiscal na assembleia geral, conforme art. 19 da Convenção.</div>
+    <p class="timestamp" id="conf-timestamp"></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     OVERLAY
+     ═══════════════════════════════════════════════════════════ -->
+<div id="overlay" class="overlay hidden"><div class="spinner"></div></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CONFIGURAÇÃO — COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT
+   ══════════════════════════════════════════════════════════════ */
+const SCRIPT_URL = "COLE_AQUI_SUA_URL_DO_APPS_SCRIPT";
+
+/* ══════════════════════════════════════════════════════════════
+   DADOS DA CONVENÇÃO
+   ══════════════════════════════════════════════════════════════ */
+const DISPOSITIVOS = [
+  {id:"art1",tipo:"Artigo",numero:"Art. 1º",titulo:"Título I – Da Natureza e Destinação",texto:"O Condomínio Sítio do Engenho caracteriza-se como condomínio de lotes (art. 1.358-A do Código Civil), compreende uma área total de 2,912 hectares, limitando-se: ao norte (280 m) com Francisco Moreira de Oliveira; ao sul (280 m) com espólio de Oceliano Moreira de Oliveira; ao leste (104 m) com a rodovia; ao oeste (104 m) com João Pedro Ferreira Filho; com endereço na rodovia CE 261, Km 5, nº 85, vila Peixe Gordo, 62810-000, município de Icapuí, estado do Ceará.",filhos:[
+    {id:"art1p1",tipo:"§",numero:"§ 1º",texto:"O limite a leste é formado por gradil em madeira, cerca de pau-a-pique sobre muro em alvenaria de pedra, com dois portões de acesso, um de madeira e funcionamento manual, e outro em aço carbono a motor elétrico."},
+    {id:"art1p2",tipo:"§",numero:"§ 2º",texto:"O limite norte é em muro em alvenaria com chapisco; a oeste, apenas cerca de pau-a-pique e; ao sul por cerca de pau-a-pique e muro em alvenaria pintado em cal."},
+    {id:"art1p3",tipo:"§",numero:"§ 3º",texto:"O imóvel, classificado como minifúndio nos termos do Formal de Partilha (proc. 1999.108.00157-0, de 20/09/1999), atribui a cada herdeiro a fração ideal de 1/16, conforme matrícula 28, livro 2, do Cartório de Registro de Imóveis do 2º Ofício de Icapuí (CE), CMN 017798.2.0000028-68."}
+  ]},
+  {id:"art2",tipo:"Artigo",numero:"Art. 2º",texto:"A destinação do condomínio é estritamente residencial, sendo vedada a utilização das unidades autônomas para fins comerciais, industriais ou de hospedagem, ressalvadas as atividades profissionais que não gerem fluxo de terceiros.",filhos:[]},
+  {id:"art3",tipo:"Artigo",numero:"Art. 3º",titulo:"Título II – Da Propriedade e das Áreas",texto:"O condomínio é composto por:",filhos:[
+    {id:"art3i1",tipo:"Inciso",numero:"I",texto:"Unidades Autônomas (Lotes): áreas de propriedade exclusiva, numeradas de 1 (um) a 16 (dezesseis), conforme memorial descritivo e planta aprovada."},
+    {id:"art3i2",tipo:"Inciso",numero:"II",texto:"Áreas Comuns:",subfilhos:[
+      {id:"art3i2a",tipo:"Alínea",numero:"a",texto:"a Casa Paterna, de taipa, estrutura de carnaúba e madeira lavrada, coberta de telhas de barro, áreas adjacentes, calçadas e estacionamento pavimentado;"},
+      {id:"art3i2b",tipo:"Alínea",numero:"b",texto:"o Engenho para moer cana-de-açúcar, de fabricação americana de 1919/1920, agregado a instalações para a produção de alfenim, mel, melaço, rapadura, álcool ou cachaça;"},
+      {id:"art3i2c",tipo:"Alínea",numero:"c",texto:"a Casa de Farinha composta por forno a lenha, prensa, caixão para massa prensada, roda movimentada por dois homens, caixão de farinha torrada e áreas para prensagem e raspagem da mandioca;"},
+      {id:"art3i2d",tipo:"Alínea",numero:"d",texto:"o Cata-vento montado sobre torre metálica de 7m, contendo sistema de captação de água por bomba de sucção e quatro caixas d'água elevadas;"},
+      {id:"art3i2e",tipo:"Alínea",numero:"e",texto:"dois poços: um escavado com 8m de profundidade e outro artesiano com 24m de profundidade;"},
+      {id:"art3i2f",tipo:"Alínea",numero:"f",texto:"as áreas de plantio: as baixas (do engenho, do Zé de Luluca e do Tetéu) e a bagaceira;"},
+      {id:"art3i2g",tipo:"Alínea",numero:"g",texto:"o tanque para água de irrigação, localizado na baixa do engenho;"},
+      {id:"art3i2h",tipo:"Alínea",numero:"h",texto:"as cercas e os muros de limite, os portões, via de acesso aos lotes, rede elétrica e iluminação viária e da quadra de areia;"},
+      {id:"art3i2i",tipo:"Alínea",numero:"i",texto:"a casa do caseiro, em alvenaria de tijolos;"},
+      {id:"art3i2j",tipo:"Alínea",numero:"j",texto:"as demais coisas discriminadas na planta anexa."}
+    ]}
+  ]},
+  {id:"art4",tipo:"Artigo",numero:"Art. 4º",titulo:"Título IV – Dos Condôminos: Direitos e Deveres",texto:"Define-se como Condômino:",filhos:[
+    {id:"art4i1",tipo:"Inciso",numero:"I",texto:"o proprietário de área comum;"},
+    {id:"art4i2",tipo:"Inciso",numero:"II",texto:"o proprietário de lote;"},
+    {id:"art4i3",tipo:"Inciso",numero:"III",texto:"o proprietário de chalé;"},
+    {id:"art4i4",tipo:"Inciso",numero:"IV",texto:"o viúvo ou a viúva de filho de João Cunha Rebouças e Maria do Carmo Rebouças, enquanto desejar;"},
+    {id:"art4i5",tipo:"Inciso",numero:"V",texto:"o descendente ou dependente de filho ou filha de João Cunha Rebouças e Maria do Carmo Rebouças, desde que manifeste adesão até setembro do ano anterior às eleições."},
+    {id:"art4p1",tipo:"§",numero:"§ 1º",texto:"O Inciso I somente é aplicável aos filhos e filhas de João Cunha Rebouças e Maria do Carmo Rebouças."},
+    {id:"art4p2",tipo:"§",numero:"§ 2º",texto:"Para fins do Inciso III entende-se por Chalé qualquer obra humana habitável."}
+  ]},
+  {id:"art5",tipo:"Artigo",numero:"Art. 5º",texto:"A titularidade de um único condômino para todas as unidades autônomas (lotes) não altera o presente Condomínio.",filhos:[]},
+  {id:"art6",tipo:"Artigo",numero:"Art. 6º",texto:"São direitos do Condômino:",filhos:[
+    {id:"art6i1",tipo:"Inciso",numero:"I",texto:"usar, fruir e dispor de sua unidade autônoma, respeitando as normas construtivas;"},
+    {id:"art6i2",tipo:"Inciso",numero:"II",texto:"utilizar as áreas comuns conforme a sua destinação, sem excluir a utilização pelos demais;"},
+    {id:"art6i3",tipo:"Inciso",numero:"III",texto:"apresentar emendas aos projetos de orçamento das receitas e despesas, em 5 dias; bem como aos projetos de alteração da convenção, em 15 dias;"},
+    {id:"art6i4",tipo:"Inciso",numero:"IV",texto:"convocar e participar das assembleias e nelas debater os assuntos da ordem do dia;"},
+    {id:"art6i5",tipo:"Inciso",numero:"V",texto:"reservar a casa paterna, votar e ser votado, estando quite."}
+  ]},
+  {id:"art7",tipo:"Artigo",numero:"Art. 7º",texto:"São deveres do Condômino:",filhos:[
+    {id:"art7i1",tipo:"Inciso",numero:"I",texto:"contribuir financeiramente na proporção das suas frações ideais, sob pena da incidência de correção monetária (IPCA), juros (SELIC) e multa moratória de 2% em caso de impontualidade;"},
+    {id:"art7i2",tipo:"Inciso",numero:"II",texto:"zelar pela integridade da Casa Paterna, tomando precauções para que os animais domésticos não danifiquem o mobiliário, eletrodomésticos, instalações elétrica ou hidráulica, louças e utensílios;"},
+    {id:"art7i3",tipo:"Inciso",numero:"III",texto:"recepcionar os visitantes e fazer-se presente durante toda a estada daqueles;"},
+    {id:"art7i4",tipo:"Inciso",numero:"IV",texto:"garantir que o uso da propriedade não perturbe o sossego ou a salubridade alheia;"},
+    {id:"art7i5",tipo:"Inciso",numero:"V",texto:"cientificar os visitantes dos deveres a que estão sujeitos;"},
+    {id:"art7i6",tipo:"Inciso",numero:"VI",texto:"abster-se de obras que comprometam a segurança ou a estética do conjunto;"},
+    {id:"art7i7",tipo:"Inciso",numero:"VII",texto:"manter o lote limpo, mesmo antes de edificar."}
+  ]},
+  {id:"art8",tipo:"Artigo",numero:"Art. 8º",titulo:"Título V – Da Administração do Condomínio",texto:"A administração será exercida por um corpo diretivo composto por:",filhos:[
+    {id:"art8i1",tipo:"Inciso",numero:"I",texto:"um Síndico: gestor executivo com as seguintes atribuições, além das previstas no art. 1.348 do Código Civil:",subfilhos:[
+      {id:"art8i1a",tipo:"Alínea",numero:"a",texto:"encaminhar ao conselho fiscal a prestação de contas anual até 15 de janeiro;"},
+      {id:"art8i1b",tipo:"Alínea",numero:"b",texto:"disponibilizar os projetos de orçamento das receitas e despesas até 15 de setembro;"},
+      {id:"art8i1c",tipo:"Alínea",numero:"c",texto:"convocar assembleia geral ordinária para: (1) tomar a prestação de contas até 31 de março; (2) aprovação do orçamento até 30 de setembro;"},
+      {id:"art8i1d",tipo:"Alínea",numero:"d",texto:"responder aos questionamentos dos condôminos em cinco dias."}
+    ]},
+    {id:"art8i2",tipo:"Inciso",numero:"II",texto:"um Subsíndico: responsável por auxiliar o Síndico e substitui-lo em suas ausências ou impedimentos eventuais;"},
+    {id:"art8i3",tipo:"Inciso",numero:"III",texto:"um Conselho Fiscal: órgão colegiado composto por 3 membros, competindo-lhe:",subfilhos:[
+      {id:"art8i3a",tipo:"Alínea",numero:"a",texto:"dar parecer sobre as contas do síndico em até 15 dias;"},
+      {id:"art8i3b",tipo:"Alínea",numero:"b",texto:"autorizar estadas superiores a 15 dias;"},
+      {id:"art8i3c",tipo:"Alínea",numero:"c",texto:"assessorar o síndico na solução dos problemas que digam respeito ao condomínio;"},
+      {id:"art8i3d",tipo:"Alínea",numero:"d",texto:"convocar a assembleia geral ordinária, se o síndico não o fizer;"},
+      {id:"art8i3e",tipo:"Alínea",numero:"e",texto:"conduzir o processo eleitoral;"},
+      {id:"art8i3f",tipo:"Alínea",numero:"f",texto:"instaurar, processar e instruir o procedimento apuratório por descumprimento da convenção, submetendo relatório e proposta à assembleia;"},
+      {id:"art8i3g",tipo:"Alínea",numero:"g",texto:"receber e encaminhar aos condôminos os projetos de alteração da convenção, com as respectivas emendas;"},
+      {id:"art8i3h",tipo:"Alínea",numero:"h",texto:"convocar assembleia geral extraordinária para: (1) eleição no mês de outubro dos anos ímpares; (2) julgar procedimento apuratório; (3) destituir e eleger novo síndico; (4) apreciar alteração urgente da convenção; (5) eleger membro em caso de vacância."}
+    ]}
+  ]},
+  {id:"art8pu",tipo:"Artigo",numero:"Par. Único do Art. 8º",texto:"Os membros do conselho fiscal escolherão seu presidente.",filhos:[]},
+  {id:"art9",tipo:"Artigo",numero:"Art. 9º",texto:"A eleição para os cargos mencionados no artigo anterior ocorrerá em assembleia geral extraordinária.",filhos:[
+    {id:"art9p1",tipo:"§",numero:"§ 1º",texto:"O mandato de todos os membros eleitos será de dois anos, permitida a reeleição sucessiva e indefinida para qualquer um dos cargos."},
+    {id:"art9p2",tipo:"§",numero:"§ 2º",texto:"Os eleitos serão empossados no 1º de janeiro seguinte à sua eleição, o qual findará em 31 de dezembro do ano posterior."},
+    {id:"art9p3",tipo:"§",numero:"§ 3º",texto:"O mandato se prorrogará automaticamente até a posse dos novos eleitos, caso a Assembleia de eleição não se realize por motivo de força maior."}
+  ]},
+  {id:"art10",tipo:"Artigo",numero:"Art. 10",titulo:"Título VI – Das Unidades Autônomas (Lotes)",texto:"Os 16 lotes de uso individual destinam-se à edificação residencial unifamiliar, sendo vedada a construção de muros ou gradis divisórios entre eles. É permitido o cultivo de cercas vivas.",filhos:[
+    {id:"art10p1",tipo:"§",numero:"§ 1º",texto:"A alienação ou permuta de lotes ou chalés e o direito de edificar são restritos aos herdeiros, seus descendentes e dependentes."},
+    {id:"art10p2",tipo:"§",numero:"§ 2º",texto:"É vedado o desmembramento dos lotes em frações inferiores às originais."}
+  ]},
+  {id:"art11",tipo:"Artigo",numero:"Art. 11",titulo:"Título VII – Das Áreas Comuns e Sua Utilização",texto:"São inalienáveis e de uso comum as benfeitorias listadas no inciso II do art. 3º.",filhos:[
+    {id:"art11pu",tipo:"§",numero:"Par. Único",texto:"São proibidas a locação ou a disponibilização da Casa Paterna a terceiros, bem como o seu uso para auferir vantagem ou remuneração."}
+  ]},
+  {id:"art12",tipo:"Artigo",numero:"Art. 12",texto:"As áreas comuns são de livre utilização pelos condôminos, descendentes e dependentes, desde que não impeça o uso pelos demais.",filhos:[
+    {id:"art12pu",tipo:"§",numero:"Par. Único",texto:"Consideram-se Dependentes aqueles que, independentemente de laço consanguíneo, desfrutam de reconhecimento e tratamento familiar análogo ao de descendentes."}
+  ]},
+  {id:"art13",tipo:"Artigo",numero:"Art. 13",texto:"O uso da Casa Paterna é exclusivo dos condôminos, descendentes ou dependentes e reger-se-á pelos critérios de:",filhos:[
+    {id:"art13i1",tipo:"Inciso",numero:"I",texto:"agendamento com o síndico, com antecedência de 10 dias;"},
+    {id:"art13i2",tipo:"Inciso",numero:"II",texto:"ordem de chegada, respeitado o agendamento."},
+    {id:"art13p1",tipo:"§",numero:"§ 1º",texto:"A prioridade de agendamento não se aplica aos enfermos e menores de 12 anos acompanhados das mães."},
+    {id:"art13p2",tipo:"§",numero:"§ 2º",texto:"As estadas superiores a 15 dias requerem autorização do conselho fiscal. As estadas maiores que 60 dias devem ser aprovadas por assembleia especialmente convocada."},
+    {id:"art13p3",tipo:"§",numero:"§ 3º",texto:"A ocupação parcial da casa por um condômino, descendente ou dependente não exclui o direito de uso dos cômodos livres pelos demais."},
+    {id:"art13p4",tipo:"§",numero:"§ 4º",texto:"Aos descendentes ou dependentes que tenham renunciado à herança ou cota-parte são assegurados os direitos de:",subfilhos:[
+      {id:"art13p4i1",tipo:"Inciso",numero:"I",texto:"visitação, das 8h às 20h;"},
+      {id:"art13p4i2",tipo:"Inciso",numero:"II",texto:"reserva da casa paterna, pagando antecipadamente a taxa de uso correspondente ao valor de duas faxinas constantes do último balancete."}
+    ]},
+    {id:"art13p5",tipo:"§",numero:"§ 5º",texto:"Os condôminos, seus descendentes ou dependentes terão preferência na reserva da casa em relação aos familiares não condôminos."}
+  ]},
+  {id:"art14",tipo:"Artigo",numero:"Art. 14",titulo:"Título VIII – Das Assembleias Gerais",texto:'A assembleia geral é ordinária quando tem por objeto as matérias do art. 8º, I, "b", da Convenção e extraordinária nos demais casos.',filhos:[]},
+  {id:"art15",tipo:"Artigo",numero:"Art. 15",texto:"As assembleias serão convocadas pelo síndico, conselho fiscal ou por um quarto dos condôminos, por escrito ou por meios eletrônicos.",filhos:[]},
+  {id:"art16",tipo:"Artigo",numero:"Art. 16",texto:"Exceto se o edital de convocação dispuser de forma diversa, a assembleia será realizada em sessão permanente, por meio eletrônico, com duração de 15 dias.",filhos:[]},
+  {id:"art17",tipo:"Artigo",numero:"Art. 17",texto:"A instalação em primeira convocação requer a presença da metade dos condôminos. Não atingido o quórum, a assembleia poderá deliberar, em segunda convocação, com qualquer número de presentes.",filhos:[
+    {id:"art17p1",tipo:"§",numero:"§ 1º",texto:"Salvo disposição legal ou convencional em contrário, as deliberações são tomadas pela maioria dos votos dos presentes."},
+    {id:"art17p2",tipo:"§",numero:"§ 2º",texto:"O condômino poderá se fazer representar nas assembleias por procurador indicado por escrito, dentre os condôminos, descendentes, dependentes ou advogado."}
+  ]},
+  {id:"art18",tipo:"Artigo",numero:"Art. 18",texto:"Após o recebimento das cédulas, o presidente fará a apuração elaborando mapa contendo o colégio eleitoral, os votantes com seus respectivos votos e os eleitos.",filhos:[]},
+  {id:"art19",tipo:"Artigo",numero:"Art. 19",texto:"O projeto de alteração da convenção e as emendas apresentadas serão encaminhados ao Conselho Fiscal para serem discutidos e votados por ocasião da assembleia geral ordinária seguinte, salvo se a matéria for reputada urgente.",filhos:[]},
+  {id:"art20",tipo:"Artigo",numero:"Art. 20",titulo:"Título IX – Do Colégio Eleitoral",texto:"Compõem o colégio eleitoral todos os proprietários de qualquer uma das modalidades de propriedade indicadas no art. 4º da Convenção, computando-se um voto por cada lote, chalé ou parte comum, ainda que de titularidade da mesma pessoa.",filhos:[
+    {id:"art20pu",tipo:"§",numero:"Par. Único",texto:"Quando em uma das modalidades de condômino houver copropriedade, comporá o colégio eleitoral apenas um dos proprietários previamente indicado ao presidente do conselho."}
+  ]},
+  {id:"art21",tipo:"Artigo",numero:"Art. 21",texto:"Os descendentes ou dependentes de condômino adimplente poderão ser votados para compor a administração.",filhos:[
+    {id:"art21pu",tipo:"§",numero:"Par. Único",texto:"São inelegíveis os inadimplentes e seus respectivos descendentes ou dependentes."}
+  ]},
+  {id:"art22",tipo:"Artigo",numero:"Art. 22",texto:"Somente poderão votar e serem votados os condôminos adimplentes até a data da publicação do edital de convocação.",filhos:[]},
+  {id:"art23",tipo:"Artigo",numero:"Art. 23",titulo:"Título X – Do Fundo Financeiro",texto:"Para fins de rateio do custeio, manutenção, reserva e investimento haverá diferentes tipos de quinhões:",filhos:[
+    {id:"art23i1",tipo:"Inciso",numero:"I",texto:"proprietário de área comum: 1 (um) quinhão;"},
+    {id:"art23i2",tipo:"Inciso",numero:"II",texto:"proprietário de lote: 1 (um) quinhão;"},
+    {id:"art23i3",tipo:"Inciso",numero:"III",texto:"proprietário de chalé: 2 (dois) quinhões;"},
+    {id:"art23i4",tipo:"Inciso",numero:"IV",texto:"viúvo ou viúva de filho ou filha de João Cunha Rebouças e Maria do Carmo Rebouças: 1 (um) quinhão;"},
+    {id:"art23i5",tipo:"Inciso",numero:"V",texto:"descendente ou dependente de filho ou filha de João Cunha Rebouças e Maria do Carmo Rebouças: 1 (um) quinhão."},
+    {id:"art23p1",tipo:"§",numero:"§ 1º",texto:"O valor de cada quinhão será obtido pela divisão do valor total do custeio, manutenção, reserva e investimento pelo número total de quinhões."},
+    {id:"art23p2",tipo:"§",numero:"§ 2º",texto:"A não integralização da parte financeira devida ao Condomínio nos prazos estabelecidos pela Convenção não poderá em nenhuma hipótese ser assumida pelo Síndico, devendo este informar nos balancetes."}
+  ]},
+  {id:"art24",tipo:"Artigo",numero:"Art. 24",texto:"Os pagamentos das cotas condominiais dos exercícios anteriores irão para a rubrica de reserva, até que esta corresponda a 50% do orçamento das receitas. O excedente integrará a rubrica de investimentos.",filhos:[]},
+  {id:"art25",tipo:"Artigo",numero:"Art. 25",texto:"As contribuições voluntárias integrarão a rubrica de investimentos, podendo ser feitas por qualquer pessoa natural ou jurídica e, ainda que habituais, não darão ao doador direitos exclusivos dos condôminos.",filhos:[]},
+  {id:"art26",tipo:"Artigo",numero:"Art. 26",texto:"As despesas com o consumo de energia da iluminação de estrada de acesso aos lotes e áreas comuns, do sistema de irrigação, da manutenção dos poços e das bombas, o abastecimento de água e energia da casa paterna e da casa do caseiro bem como da conservação e manutenção de todos os bens relacionados no art. 3º, II, da Convenção.",filhos:[]},
+  {id:"art27",tipo:"Artigo",numero:"Art. 27",texto:"As instalações de fornecimento de energia elétrica e abastecimento de água para os lotes e edificações ali encravadas serão individualizadas e as despesas de consumo de inteira responsabilidade dos seus proprietários.",filhos:[]},
+  {id:"art28",tipo:"Artigo",numero:"Art. 28",texto:"O Síndico poderá ter, se assim o desejar, isenção de valor equivalente a um quinhão.",filhos:[]}
+];
+
+const OPCOES = [
+  {valor:"favoravel",label:"Favorável",icon:"✓"},
+  {valor:"contrario",label:"Contrário",icon:"✗"},
+  {valor:"abstencao",label:"Abstenção",icon:"—"},
+  {valor:"destaque",label:"Destaque p/ Emenda",icon:"✎"}
+];
+
+/* ── Estado ── */
+let votos = {};
+let nomeVotante = "";
+let emailVotante = "";
+let todosIds = [];
+
+function coletarIds() {
+  todosIds = [];
+  DISPOSITIVOS.forEach(d => {
+    todosIds.push(d.id);
+    if(d.filhos) d.filhos.forEach(f => {
+      todosIds.push(f.id);
+      if(f.subfilhos) f.subfilhos.forEach(s => todosIds.push(s.id));
+    });
+  });
+}
+coletarIds();
+
+/* ── Helpers ── */
+function $(id) { return document.getElementById(id); }
+function show(id) { $(id).classList.remove("hidden"); }
+function hide(id) { $(id).classList.add("hidden"); }
+function showOverlay() { show("overlay"); }
+function hideOverlay() { hide("overlay"); }
+
+/* ── Login ── */
+async function entrar() {
+  const nome = $("inp-nome").value.trim();
+  const email = $("inp-email").value.trim().toLowerCase();
+  if(!nome || nome.length < 5) { $("login-erro").textContent = "Informe seu nome completo (mínimo 5 caracteres)."; show("login-erro"); return; }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $("login-erro").textContent = "Informe um e-mail válido."; show("login-erro"); return; }
+  hide("login-erro");
+
+  showOverlay();
+  try {
+    const res = await fetch(SCRIPT_URL + "?action=check&email=" + encodeURIComponent(email));
+    const data = await res.json();
+    if(data.jaVotou) {
+      hideOverlay();
+      hide("form-login");
+      $("nome-ja-votou").textContent = data.nome || email;
+      show("msg-ja-votou");
+      return;
+    }
+  } catch(e) {
+    // Se não conseguir verificar, permite votar (a verificação final é no envio)
+  }
+  hideOverlay();
+
+  nomeVotante = nome;
+  emailVotante = email;
+  votos = {};
+  hide("tela-login");
+  show("tela-votacao");
+  $("hdr-nome").textContent = nome;
+  renderArtigos();
+  atualizarProgresso();
+}
+
+// Enter key nos inputs
+document.addEventListener("DOMContentLoaded", () => {
+  $("inp-nome").addEventListener("keydown", e => { if(e.key === "Enter") $("inp-email").focus(); });
+  $("inp-email").addEventListener("keydown", e => { if(e.key === "Enter") entrar(); });
+});
+
+/* ── Render ── */
+function criarBotoesVoto(id) {
+  let html = '<div class="btns-voto">';
+  OPCOES.forEach(op => {
+    const sel = votos[id] === op.valor;
+    html += `<button class="btn-voto ${sel ? 'sel-'+op.valor : ''}" onclick="votar('${id}','${op.valor}')">`;
+    if(sel) html += `<span>${op.icon}</span> `;
+    html += `${op.label}</button>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderSubfilho(s) {
+  return `<div class="sub-item">
+    <div class="filho-texto"><span class="sub-num">${s.numero})</span>${esc(s.texto)}</div>
+    ${criarBotoesVoto(s.id)}
+  </div>`;
+}
+
+function renderFilho(f) {
+  const tipoClass = f.tipo === "Inciso" ? "inciso" : f.tipo === "Alínea" ? "alinea" : "paragrafo";
+  let html = `<div class="filho-item tipo-${tipoClass}">
+    <div class="filho-texto"><span class="tag-numero tag-${tipoClass}">${f.numero}</span>${esc(f.texto)}</div>
+    ${criarBotoesVoto(f.id)}`;
+  if(f.subfilhos) f.subfilhos.forEach(s => { html += renderSubfilho(s); });
+  html += '</div>';
+  return html;
+}
+
+function renderArtigos() {
+  let html = '';
+  DISPOSITIVOS.forEach(d => {
+    const vc = votos[d.id] ? 'v-'+votos[d.id] : '';
+    html += `<div class="artigo-card ${vc}" id="card-${d.id}">`;
+    if(d.titulo) html += `<div class="titulo-secao">${esc(d.titulo)}</div>`;
+    html += `<div class="artigo-body">
+      <div class="artigo-texto"><span class="num">${d.numero}.</span>${esc(d.texto)}</div>
+      ${criarBotoesVoto(d.id)}`;
+    if(d.filhos) d.filhos.forEach(f => { html += renderFilho(f); });
+    html += '</div></div>';
+  });
+
+  // Resumo e botões de ação
+  html += `<div class="acoes">
+    <button class="btn-revisar" onclick="toggleResumo()">Revisar Minha Cédula</button><br>
+    <div id="erro-submit" class="erro hidden"></div>
+    <button class="btn-submeter parcial" id="btn-submeter" onclick="submeter()">Submeter Cédula de Votação</button>
+    <p class="aviso-sub">Após a submissão, o voto será irretratável e não poderá ser alterado.</p>
+  </div>`;
+
+  html += '<div class="resumo-box" id="resumo-box"></div>';
+
+  $("corpo-artigos").innerHTML = html;
+}
+
+function esc(t) { return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ── Votar ── */
+function votar(id, valor) {
+  if(votos[id] === valor) delete votos[id];
+  else votos[id] = valor;
+  renderArtigos();
+  atualizarProgresso();
+}
+
+/* ── Progresso ── */
+function atualizarProgresso() {
+  const votados = todosIds.filter(id => votos[id]).length;
+  const total = todosIds.length;
+  const pct = total > 0 ? (votados/total)*100 : 0;
+  const fill = $("progress-fill");
+  fill.style.width = pct + "%";
+  fill.className = "progress-fill " + (pct === 100 ? "completo" : "parcial");
+  $("progress-count").textContent = votados + "/" + total;
+
+  const contagem = {favoravel:0, contrario:0, abstencao:0, destaque:0};
+  todosIds.forEach(id => { if(votos[id] && contagem[votos[id]] !== undefined) contagem[votos[id]]++; });
+
+  const cores = {favoravel:"var(--fav)",contrario:"var(--con)",abstencao:"var(--abs)",destaque:"var(--des)"};
+  let ch = '';
+  OPCOES.forEach(op => {
+    ch += `<div class="item"><div class="dot" style="background:${cores[op.valor]}"></div><span class="txt">${op.label}: <strong>${contagem[op.valor]}</strong></span></div>`;
+  });
+  $("contadores").innerHTML = ch;
+
+  const btn = $("btn-submeter");
+  if(btn) {
+    btn.className = "btn-submeter " + (votados === total ? "pronto" : "parcial");
+  }
+}
+
+/* ── Resumo ── */
+function toggleResumo() {
+  const box = $("resumo-box");
+  if(box.classList.contains("visivel")) { box.classList.remove("visivel"); return; }
+  let html = `<h2>Resumo — ${esc(nomeVotante)}</h2>`;
+  DISPOSITIVOS.forEach(d => {
+    html += `<div class="resumo-grupo"><div class="rg-titulo">${d.numero}</div>`;
+    html += linhaResumo(d.id, "Caput");
+    if(d.filhos) d.filhos.forEach(f => {
+      html += linhaResumo(f.id, f.tipo + " " + f.numero);
+      if(f.subfilhos) f.subfilhos.forEach(s => {
+        html += `<div style="padding-left:16px">${linhaResumo(s.id, s.tipo + " " + s.numero)}</div>`;
+      });
+    });
+    html += '</div>';
+  });
+  box.innerHTML = html;
+  box.classList.add("visivel");
+  box.scrollIntoView({behavior:"smooth"});
+}
+
+function linhaResumo(id, label) {
+  const v = votos[id];
+  if(!v) return `<div class="resumo-linha pendente">${label}: — pendente —</div>`;
+  const op = OPCOES.find(o => o.valor === v);
+  const cores = {favoravel:"var(--fav)",contrario:"var(--con)",abstencao:"var(--abs)",destaque:"var(--des)"};
+  return `<div class="resumo-linha" style="color:${cores[v]};font-weight:600">${label}: ${op.label}</div>`;
+}
+
+/* ── Submeter ── */
+async function submeter() {
+  const pendentes = todosIds.length - todosIds.filter(id => votos[id]).length;
+  if(pendentes > 0) {
+    $("erro-submit").textContent = `Restam ${pendentes} dispositivo(s) sem voto. Vote em todos para submeter.`;
+    show("erro-submit");
+    return;
+  }
+  hide("erro-submit");
+  $("btn-submeter").disabled = true;
+  showOverlay();
+
+  try {
+    const payload = {
+      action: "votar",
+      nome: nomeVotante,
+      email: emailVotante,
+      votos: votos,
+      dataHora: new Date().toISOString()
+    };
+
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain"},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if(data.erro === "ja_votou") {
+      hideOverlay();
+      alert("Este e-mail já possui uma cédula registrada. Não é possível votar novamente.");
+      $("btn-submeter").disabled = false;
+      return;
+    }
+
+    if(data.sucesso) {
+      hideOverlay();
+      hide("tela-votacao");
+      $("conf-nome").textContent = nomeVotante;
+      $("conf-timestamp").textContent = "Registrado em " + new Date().toLocaleString("pt-BR");
+      show("tela-confirmacao");
+      return;
+    }
+
+    throw new Error(data.erro || "Erro desconhecido");
+  } catch(e) {
+    hideOverlay();
+    $("erro-submit").textContent = "Erro ao registrar: " + e.message + ". Tente novamente.";
+    show("erro-submit");
+    $("btn-submeter").disabled = false;
+  }
+}
+</script>
+</body>
+</html>
